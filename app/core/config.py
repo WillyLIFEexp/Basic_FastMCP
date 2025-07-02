@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     DB_URL: str = "sqlite:///./auth.db"
-    SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"  # for local dev
+    SQLALCHEMY_DATABASE_URL: str = "sqlite:///./test.db"  # for local dev
 
     @property
     def access_token_expires(self):
