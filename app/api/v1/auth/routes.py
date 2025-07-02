@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, requests
 from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate
 from fastapi.security import OAuth2PasswordRequestForm
@@ -9,6 +9,12 @@ from app.crud.user import create_user, authenticate_user, get_user_by_username
 from app.core.config import settings
 from app.api.deps import get_current_user, require_role
 from app.schemas.user import UserResponse
+from app.schemas.math_solver import MathRequest
+from fastapi import FastAPI, Request
+from app.agents.solver_agent import run_math_agent
+from fastapi.responses import JSONResponse
+
+import json
 
 router = APIRouter()
 
@@ -74,3 +80,13 @@ def refresh_token(request: RefreshTokenRequest, db: Session = Depends(get_db)):
         "refresh_token": new_refresh_token,
         "token_type": "bearer"
     }
+
+@router.post("/solve")
+async def solve_math(payload: MathRequest):
+    question = payload.question.strip()
+
+    if not question:
+        return JSONResponse(status_code=400, content={"error": "Missing 'question' field in request"})
+
+    result = await run_math_agent(question)
+    return {"result": result}
