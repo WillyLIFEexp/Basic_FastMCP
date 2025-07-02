@@ -1,0 +1,20 @@
+[project]
+name = "basic-fastmcp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "fastapi>=0.115.14",
+    "fastapi-mcp>=0.3.4",
+    "langchain>=0.3.26",
+    "langchain-community>=0.3.26",
+    "langchain-openai>=0.3.27",
+    "openai>=1.93.0",
+    "pandas>=2.3.0",
+    "passlib>=1.7.4",
+    "python-jose>=3.5.0",
+    "seaborn>=0.13.2",
+    "uvicorn>=0.35.0",
+]
