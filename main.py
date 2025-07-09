@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.database.init_db import init_db
 from app.api.v1.auth.routes import router as auth_router
+from app.api.v1.knowledge.routes import router as knowlege_router
 
 import uvicorn
 
@@ -16,6 +17,7 @@ app = FastAPI(
 init_db()
 
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(knowlege_router, prefix="/api/v1/knowlege", tags=["knowlege"])
 
 @app.get('/')
 def read_root():

@@ -4,7 +4,6 @@ import os
 
 ENV = os.getenv('ENV', 'dev')
 
-# Help to auto load from .env file 
 class Settings(BaseSettings):
     SECRET_KEY: str = "super-secret-key"
     OPENAI_API_KEY: str = "super-expensive-key"
@@ -12,7 +11,6 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    DB_URL: str = "sqlite:///./auth.db"
     SQLALCHEMY_DATABASE_URL: str = "sqlite:///./test.db"  # for local dev
 
     @property
