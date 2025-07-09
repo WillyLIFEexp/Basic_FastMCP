@@ -3,10 +3,9 @@ from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate
 from fastapi.security import OAuth2PasswordRequestForm
 from app.schemas.token import Token, RefreshTokenRequest
-from app.database.session import SessionLocal, get_db
+from app.database.session import get_db
 from app.core.security import create_access_token, create_refresh_token, decode_token
 from app.crud.user import create_user, authenticate_user, get_user_by_username
-from app.core.config import settings
 from app.api.deps import get_current_user, require_role
 from app.schemas.user import UserResponse
 
@@ -74,3 +73,4 @@ def refresh_token(request: RefreshTokenRequest, db: Session = Depends(get_db)):
         "refresh_token": new_refresh_token,
         "token_type": "bearer"
     }
+

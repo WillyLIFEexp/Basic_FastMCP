@@ -8,7 +8,6 @@ dependencies = [
     "dotenv>=0.9.9",
     "fastapi>=0.115.14",
     "fastapi-mcp>=0.3.4",
-    "langchain>=0.3.26",
     "langchain-community>=0.3.26",
     "langchain-openai>=0.3.27",
     "openai>=1.93.0",
