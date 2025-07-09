@@ -1,12 +1,12 @@
 from langchain_core.tools import StructuredTool
 from app.chains.math_chain import MathChain
 
-def solve(question: str) -> str:
+def explain_math(question: str) -> str:
     chain = MathChain()
     return chain.run(question)
 
 math_solver_tool = StructuredTool.from_function(
-    func=solve,
+    func=explain_math,
     name="MathSolverTool",
-    description="Solves math problems and returns the answer. Input must include 'question'."
+    description="解答數學題目並且回傳答案與解釋, 輸入必須有'question'"
 )

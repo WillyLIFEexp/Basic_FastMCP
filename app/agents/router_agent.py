@@ -2,6 +2,7 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.agents import create_react_agent, AgentExecutor
 from app.agents.english_agent import VocabAgentTool
+from app.agents.math_agent import MathAgentTool
 from app.core.config import settings
 
 router_llm = ChatOpenAI(
@@ -10,7 +11,7 @@ router_llm = ChatOpenAI(
     api_key=settings.OPENAI_API_KEY
 )
 
-tools = [VocabAgentTool()]
+tools = [VocabAgentTool(), MathAgentTool()]
 
 router_prompt = ChatPromptTemplate.from_messages([
     ("system",

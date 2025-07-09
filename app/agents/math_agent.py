@@ -1,8 +1,8 @@
 from langchain.agents import create_react_agent, AgentExecutor
 from langchain.tools import BaseTool
 from langchain.chat_models import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
-from app.tools.vocab_tool import vocab_lookup_tool
+from langchain.prompts import ChatPromptTemplate,ChatMessagePromptTemplate
+from app.tools.math_solving import math_solver_tool
 from app.core.config import settings
 
 llm = ChatOpenAI(
@@ -11,11 +11,11 @@ llm = ChatOpenAI(
     api_key=settings.OPENAI_API_KEY
 )
 
-tools = [vocab_lookup_tool]
+tools = [math_solver_tool]
 
-vocab_agent_prompt = ChatPromptTemplate.from_messages([
+math_agent_prompt = ChatPromptTemplate.from_messages([
     ("system",
-     "你是英文單字助教，根據問題使用合適的工具回答。\n\n"
+     "你是數學專家，根據問題使用合適的工具回答。\n\n"
      "你有以下工具可用：\n"
      "{tools}\n\n"
      "工具名稱為：{tool_names}\n"
@@ -31,17 +31,17 @@ vocab_agent_prompt = ChatPromptTemplate.from_messages([
     ("ai", "{agent_scratchpad}")
 ])
 
-vocab_agent = create_react_agent(
+math_agent = create_react_agent(
     llm=llm,
     tools=tools,
-    prompt=vocab_agent_prompt
+    prompt=math_agent_prompt
 )
 
-vocab_executor = AgentExecutor(agent=vocab_agent, tools=tools, verbose=True)
+math_executor = AgentExecutor(agent=math_agent, tools=tools, verbose=True)
 
-class VocabAgentTool(BaseTool):
-    name: str = "vocab_agent"
-    description: str = "查英文單字意思的智慧助教"
+class MathAgentTool(BaseTool):
+    name: str = "math_agent"
+    description: str = "用來處理數學相關的問題，例如：**代數(algebra)**、**方程式(equation)**、**微積分(calculus)**、**幾何(geometry)**或**加減乘除(arithmetic)**計算。"
 
     def _run(self, query: str) -> str:
-        return vocab_executor.invoke({"input": query})["output"]
+        return math_executor.invoke({"input": query})["output"]
