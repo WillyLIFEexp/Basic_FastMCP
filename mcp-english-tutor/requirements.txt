@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+httpx
+jsonschema
+openai>=1.40.0
+python-dotenv

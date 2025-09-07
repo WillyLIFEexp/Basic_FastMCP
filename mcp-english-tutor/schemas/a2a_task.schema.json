@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "A2A Task Envelope",
+  "type": "object",
+  "properties": {
+    "type": { "const": "task" },
+    "intent": { "enum": ["sql_issue", "english_email", "mixed"] },
+    "payload": { "type": "object" },
+    "expected": { "type": "string" },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "latency_ms": { "type": "integer", "minimum": 1000 },
+        "max_calls": { "type": "integer", "minimum": 1, "maximum": 10 }
+      },
+      "required": ["latency_ms", "max_calls"]
+    }
+  },
+  "required": ["type", "intent", "payload", "expected", "constraints"],
+  "additionalProperties": false
+}
