@@ -1,0 +1,67 @@
+services:
+  api-gateway:
+    build: ../../api-gateway
+    image: mcp_a2a/api-gateway:dev
+    environment:
+      - ROUTER_URL=http://router-agent:8000
+    ports:
+      - "8080:8000"
+    depends_on:
+      - router-agent
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  router-agent:
+    build: ../../router-agent
+    image: mcp_a2a/router-agent:dev
+    depends_on:
+      - redis
+      - rabbitmq
+      - mcp-sql-helper
+      - mcp-english-tutor
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  mcp-sql-helper:
+    build: ../../mcp-sql-helper
+    image: mcp_a2a/mcp-sql-helper:dev
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  mcp-english-tutor:
+    build: ../../mcp-english-tutor
+    image: mcp_a2a/mcp-english-tutor:dev
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-alpine
+    ports: ["5672:5672", "15672:15672"] # mgmt UI later if needed
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # Celery worker intentionally omitted for now (no tasks yet).
