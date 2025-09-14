@@ -6,6 +6,8 @@ services:
       - ROUTER_URL=http://router-agent:8000
     ports:
       - "8080:8000"
+    volumes:
+      - ../../schemas:/app/schemas
     depends_on:
       - router-agent
     healthcheck:
@@ -22,6 +24,8 @@ services:
       - rabbitmq
       - mcp-sql-helper
       - mcp-english-tutor
+    volumes:
+      - ../../schemas:/app/schemas
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8000/healthz"]
       interval: 10s
@@ -40,6 +44,8 @@ services:
   mcp-english-tutor:
     build: ../../mcp-english-tutor
     image: mcp_a2a/mcp-english-tutor:dev
+    volumes:
+      - ../../schemas:/app/schemas
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8000/healthz"]
       interval: 10s
